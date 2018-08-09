@@ -2,10 +2,12 @@
   "name": "mocha",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "test": "mocha ./test/**/*.spec.js"
+  },
   "author": "KeianBarton <Keian.Barton@civica.co.uk>",
   "license": "ISC",
   "dependencies": {
-    "global": "^4.3.2",
     "mocha": "^5.2.0"
   }
 }
