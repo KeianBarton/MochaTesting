@@ -1,9 +1,11 @@
 var assert = require('assert');
 var authController = require('../../controllers/auth.controller');
 
+beforeEach(function() { console.log('Global before each' )});
 describe('AuthController', function(){
+    before(function() { /* global setup */ });
     beforeEach(function() {
-        console.log('Running before each');
+        console.log('Local before each');
         authController.setRoles(['user']);
     });
     describe('isAuthorized', function() {
