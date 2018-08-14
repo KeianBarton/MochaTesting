@@ -1,5 +1,11 @@
 var assert = require('assert');
 var authController = require('../../controllers/auth.controller');
+var chai = require('chai');
+var expect = chai.expect;
+var should = chai.should();
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+chai.should();       // add to Object.prototype
 
 beforeEach(function() { console.log('Global before each' )});
 describe('AuthController', function(){
@@ -10,7 +16,10 @@ describe('AuthController', function(){
     });
     describe('isAuthorized', function() {
         it('Should return false if not authorized', function() {
-            assert.equal(false, authController.isAuthorized('admin'));
+            var isAuth = authController.isAuthorized('admin');
+            //assert.equal(false, isAuth);
+            //expect(isAuth).to.be.false;
+            isAuth.should.be.false;
         });
         it('Should return true if authorized', function() {
             authController.setRoles(['user', 'admin']);
@@ -43,6 +52,12 @@ describe('AuthController', function(){
             } else {
                 // actual test
             }
-        }
+        })
+    });
+    describe('isAuthorizedPromise', function() {
+        it('Should return false if not authorized', function() {
+            // Mocha can return promise, so no need for 'done'
+            return authController.isAuthorizedPromise('admin').should.eventually.be.false;
+        });
     });
 });
