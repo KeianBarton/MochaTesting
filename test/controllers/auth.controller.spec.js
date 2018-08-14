@@ -4,6 +4,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var should = chai.should();
 var chaiAsPromised = require('chai-as-promised');
+var sinon = require('sinon');
 chai.use(chaiAsPromised);
 chai.should();       // add to Object.prototype
 
@@ -58,6 +59,19 @@ describe('AuthController', function(){
         it('Should return false if not authorized', function() {
             // Mocha can return promise, so no need for 'done'
             return authController.isAuthorizedPromise('admin').should.eventually.be.false;
+        });
+    });
+    describe('getIndex', function() {
+        it('should render index', function() {
+            var req = {};
+            var res = {
+                render: sinon.spy()
+            };
+
+            authController.getIndex(req, res);
+            // console.log(res.render);
+            res.render.calledOnce.should.be.true;
+            res.render.firstCall.args[0].should.equal('index');
         });
     });
 });
