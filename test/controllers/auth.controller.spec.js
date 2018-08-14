@@ -4,7 +4,7 @@ var authController = require('../../controllers/auth.controller');
 beforeEach(function() { console.log('Global before each' )});
 describe('AuthController', function(){
     before(function() { /* global setup */ });
-    beforeEach(function() {
+    beforeEach('this func is erroring intentionally', function errorFunc () {
         console.log('Local before each');
         authController.setRoles(['user']);
     });
@@ -16,7 +16,11 @@ describe('AuthController', function(){
             authController.setRoles(['user', 'admin']);
             assert.equal(true, authController.isAuthorized('admin'));
         });
+        it('should not allow a get if not authorized');
+        it('should allow get if authorized');
     });
+    // describe.only('isAuthorizedAsync', function() {
+    // describe.skip('isAuthorizedAsync', function() {
     describe('isAuthorizedAsync', function() {
         it('Should return false if not authorized', function(done) {
             this.timeout(2500);
@@ -33,5 +37,12 @@ describe('AuthController', function(){
                 done();
             });
         });
+        it('Conditional skipping example', function() {
+            if (true) { // something environmental
+                this.skip();
+            } else {
+                // actual test
+            }
+        }
     });
 });
