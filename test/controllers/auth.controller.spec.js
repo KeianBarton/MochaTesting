@@ -74,4 +74,40 @@ describe('AuthController', function(){
             res.render.firstCall.args[0].should.equal('index');
         });
     });
+    describe('examples stubbing and mocking functions', function() {
+        var user = {};
+        beforeEach(function() {
+            user = {
+                roles: ['user'],
+                isAuthorized: function (neededRole) {
+                    return this.roles.indexOf(neededRole) >= 0;
+                }
+            }
+        });
+        it('watching existing functions', function() {
+            sinon.spy(user, 'isAuthorized');   // watch for calls
+            // authController.setUser(user)
+            user.isAuthorized.calledOnce.should.be.false;
+        });
+        it('stubbing functions', function() {
+            var isAuth = sinon.stub(user, 'isAuthorized').returns(true);
+            // authController...   call something which calls user.isAuthorized
+            isAuth.calledOnce.should.be.false;
+        })
+        it('stubbing functions throws error', function() {
+            var isAuth = sinon.stub(user, 'isAuthorized').throws();
+            // authController...   call something which calls user.isAuthorized
+            isAuth.calledOnce.should.be.false;
+        })
+        it('mocking example', function() {
+            var req = {};
+            var res = {
+                render: function(){}
+            };
+            var mock = sinon.mock(res);
+            mock.expects('render').once().withExactArgs('index');
+            authController.getIndex(req, res);
+            mock.verify();
+        })
+    });
 });
