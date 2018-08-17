@@ -31,8 +31,12 @@ describe('GitService', function() {
 
             // getUser returns a promise - use a return for Mocha to wait
             return gitService.getUser('keianbarton').then(
-                function(user) {
-                    console.log(user);
+                (user) => {   // use arrow function so 'this' doesn't refer to callback this
+                    var params = this.request.getCall(0).args;
+                    params[0].headers['User-Agent'].should.equal('gitExample');
+
+                    this.request.getCall(1).args[0].path.should.equal('/users/keianbarton/repos');
+
                     user.login.should.equal('KeianBarton');
                     user.should.have.property('repos');
                 }
